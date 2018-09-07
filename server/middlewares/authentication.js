@@ -29,6 +29,12 @@ export default class Authentication {
         } catch (e) {
             return Response.returnError(res, e);
         }
+    };
+    static authenticateSocket = async (socket) => {
+        const token = socket.handshake.query.token;
+        if (token === undefined) {
+            return Promise.reject(new Error ('Cannot authenticate your connection'));
+        }
+        socket.user = await JWTHelper.verify(token);
     }
-
 }

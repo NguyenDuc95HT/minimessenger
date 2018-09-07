@@ -6,6 +6,15 @@ import {groupRepository, memberGroupRepository} from '../repositories';
 
 export default class GroupController {
 
+    getActiveGroupId = async (userId) => {
+        const memberGroup = await memberGroupRepository.getAll({
+            where:{
+                userId,
+            },
+            attributes: ['groupId']
+        });
+        return memberGroup.map(item => item.groupId);
+    }
     getListActiveGroup = async (req, res, next) => {
         try {
             const memberGroups = await memberGroupRepository.getAll({
